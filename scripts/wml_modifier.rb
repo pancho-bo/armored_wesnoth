@@ -19,7 +19,7 @@ class Section
 				@macros=values[:macros]||Array.new
 		end
 
-		def fromFile(section_name,file)
+		def fromFile(file,section_name="Global")
 
 				#debug
 				#puts "Setting section name to: #{section_name}"
@@ -44,7 +44,7 @@ class Section
 						when /\s*\[(\w+)\]/;  
 								#debug
 								#puts "Found new section: #{$1}" 
-								@subs.push(Section.new.fromFile($1,file))
+								@subs.push(Section.new.fromFile(file,$1))
 								next
 						when /\s*(\w+)=(.*)/;
 								#debug
@@ -144,7 +144,7 @@ class ActionSection
 				@filter=values[:filter]||Hash.new
 		end
 
-		def fromFile(section_name,file)
+		def fromFile(file,section_name="Global")
 
 				#debug
 				#puts "Setting section name to: #{section_name}"
@@ -176,7 +176,7 @@ class ActionSection
 								#puts "Found new section: #{$2} with action: #{$1}" 
 								action=$1
 								action = "=" if action == ""
-								@subs.push({:action => action, :value => ActionSection.new.fromFile($2,file)})
+								@subs.push({:action => action, :value => ActionSection.new.fromFile(file,$2)})
 								next
 						when /\s*([\=\-\+]?)\s*(\w+)=(.*)/;
 								#debug
@@ -186,10 +186,12 @@ class ActionSection
 								key=$2
 								value=$3
 								if line=~/\"/ and not line=~/.*\".*\".*/ then
+									value+="\n"
 									begin
 											line=file.readline
 											value+=line
 									end until line=~/\"/
+									value.chomp!
 									#debug
 									#puts "Found multiline key:" 
 									#print value
@@ -220,28 +222,30 @@ class ActionSection
 		end
 
 		def dumpSection
-				print "\t"*@@tab_counter if @@tab_counter >= 0
-				puts("["+@name+"]") if @name != "Global"
+				text=String.new
+				text+="\t"*@@tab_counter if @@tab_counter >= 0
+				text+="[#{@name}]\n" if @name != "Global"
 				@filter.each do |filter|
-						print "\t"*(@@tab_counter+1) if @@tab_counter >= 0
-						puts "/ " + filter.to_a.join("=")
+						text+="\t"*(@@tab_counter+1) if @@tab_counter >= 0
+						text+="/ " + filter.to_a.join("=") + "\n"
 				end
 				@keys.each do |key|
-						print "\t"*(@@tab_counter+1) if @@tab_counter >= 0
-						puts key[:action] + " #{key[:value].to_a.join("=")}"
+						text+="\t"*(@@tab_counter+1) if @@tab_counter >= 0
+						text+=key[:action] + " #{key[:value].to_a.join("=")}\n"
 				end
 				@macros.each do |macro|
-						print "\t"*(@@tab_counter+1) if @@tab_counter >= 0
-						puts macro[:action] + " #{macro[:value]}"
+						text+="\t"*(@@tab_counter+1) if @@tab_counter >= 0
+						text+=macro[:action] + " #{macro[:value]}\n"
 				end
 				@subs.each do |sub|
-						print sub[:action] + " "
+						text+=sub[:action] + " "
 						@@tab_counter+=1
-						sub[:value].dumpSection
+						text+=sub[:value].dumpSection
 				end
-				print "\t"*@@tab_counter if @@tab_counter >= 0
-				puts("[/"+@name+"]") if @name != "Global"
+				text+="\t"*@@tab_counter if @@tab_counter >= 0
+				text+=("[/#{@name}]\n") if @name != "Global"
 				@@tab_counter-=1
+				return text
 		end
 
 		def applyActionSection(section)
@@ -313,10 +317,10 @@ if __FILE__ == $0 then
 
 				target=File.open(target_name)
 				modlist=File.open(modlist_name)
-				target_root=Section.new.fromFile("Global",target)
-				#target_root.dumpSection
+				target_root=Section.new.fromFile(target)
+				#print target_root.dumpSection
 				
-				modlist_root=ActionSection.new.fromFile("Global",modlist)
+				modlist_root=ActionSection.new.fromFile(modlist)
 				#modlist_root.dumpSection
 				
 				modlist_root.applyActionSection(target_root)
