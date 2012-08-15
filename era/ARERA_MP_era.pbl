@@ -1,0 +1,8 @@
+title="Armored Era"
+type="era"
+author="pancho"
+icon="items/armor.png"
+version="0.2.1"
+email="ganni101@gmail.com"
+description="Era with alternate combat logic. Changes include: only one retaliation attack; high chance to hit; damage mitigation with armor."
+passphrase="ARERAPassPhrase"

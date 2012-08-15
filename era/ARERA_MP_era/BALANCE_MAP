@@ -1,0 +1,64 @@
+This is how unit balance was built.
+
+Units are divided on tanks and dds(damage dealers).
+The calculation is that:
+
+dd kills	dd	with 3 hits
+dd kills	tank	with 4 hits
+tank kills	dd	with 4 hits
+tank kills	tank	with 6 hits
+
+Result ratio of damage is 19/25.
+
+TABLE		damage	HP	armor
+
+l.1	tank	9	52	5
+	dd	13	36
+
+l.2	tank	11	60	6
+	dd	15	44
+
+l.3	tank	13	72	7
+	dd	18	52
+
+l.4	tank	15	84	8
+	dd	21	60
+
+Non-primary attack damage mostly equal to corresponding level tank damage -10%.
+
+(t - tank, d - damage dealer, h - hybrid, digit - level)
+UNITS:
+Loyalists:
+TABLE		type	damage	HP	armor	comment	
+Spearman	t1	-10%			-damage <- firststrike
+Bowman		d1				
+Fencer		d1		+10%	+1	+hp,+armor <- need to survive after using skirmisher
+Mage		d1	d2	-20%		+damage <- magical; -hp <- high damage
+Cavalry		t1		-10%	-2	-hp,-armor <- high mobility
+Horseman	d1	+50%			+damage <- charge
+H.Infantry	t1				
+
+Swordsman	t2		
+Pikeman		ht2	d1-10%	-10%	t1	firststrike
+Javeliner	ht2	d1	-10%	t1	firststrike
+Longbowman	d2				
+Duelist		d2		+10%	2	skirmsiher
+Red Mage	d2	d3	-20%		magical
+White Mage	hd2	d2		1	magical
+Dragoon		t2		-10%	-2	high mobility
+Knight		hd2	d1+50%	+10%	2	charge
+Lancer		d2	d2+50%			charge
+S.Trooper	t2				
+
+R.Guard		t3				
+Halberdier	ht3	d2-10%	-10%	t2	firststrike
+M.Bowman	d3	d3+1			sniper
+M.a.Arms	d3	d3	+10%	3	skirmisher
+Arch Mage	d3	d4	-20%		
+Silver Mage	d3	d4-10%			magical
+Holy Mage	hd3	d2	+10%	3	heals
+Cavalier	t3		-10%	-2	high mobility
+G.Knight	hd3	d2+50%	+10%	3	charge
+Paladin		hd3	d1+50%	+20%	5	charge
+I.Mauler					
+
