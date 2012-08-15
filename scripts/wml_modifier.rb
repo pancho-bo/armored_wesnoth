@@ -4,7 +4,7 @@
 
 require 'rubygems'
 require 'ftools'
-require 'profile'
+#require 'profile'
 
 
 class Section
@@ -53,10 +53,12 @@ class Section
 								value=$2
 								#multiline keys are evil
 								if line=~/\"/ and not line=~/.*\".*\".*/ then
+									value+="\n"
 									begin
 											line=file.readline
 											value+=line
 									end until line=~/\"/
+									value.chomp!
 									#debug
 									#puts "Found multiline key:" 
 									#print value
@@ -83,23 +85,25 @@ class Section
 		end
 
 		def dumpSection
-				print "\t"*@@tab_counter if @@tab_counter >= 0
-				puts("["+@name+"]") if @name != "Global"
+				text=String.new
+				text+="\t"*@@tab_counter if @@tab_counter >= 0
+				text+="[#{@name}]\n" if @name != "Global"
 				@keys.each_pair do |key,value|
-						print "\t"*(@@tab_counter+1) if @@tab_counter >= 0
-						puts "#{key}=#{value}"
+						text+="\t"*(@@tab_counter+1) if @@tab_counter >= 0
+						text+="#{key}=#{value}\n"
 				end
 				@macros.each do |macro|
-						print "\t"*(@@tab_counter+1) if @@tab_counter >= 0
-						puts "#{macro}"
+						text+="\t"*(@@tab_counter+1) if @@tab_counter >= 0
+						text+="#{macro}\n"
 				end
 				@subs.each do |sub|
 						@@tab_counter+=1
-						sub.dumpSection
+						text+=sub.dumpSection
 				end
-				print "\t"*@@tab_counter if @@tab_counter >= 0
-				puts("[/"+@name+"]") if @name != "Global"
+				text+="\t"*@@tab_counter if @@tab_counter >= 0
+				text+="[/#{@name}]\n" if @name != "Global"
 				@@tab_counter-=1
+				return text
 		end
 
 		def fromActionSection(act_sect)
@@ -316,7 +320,7 @@ if __FILE__ == $0 then
 				#modlist_root.dumpSection
 				
 				modlist_root.applyActionSection(target_root)
-				target_root.dumpSection
+				print target_root.dumpSection
 				
 				target.close
 				modlist.close
