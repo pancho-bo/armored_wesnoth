@@ -4,8 +4,11 @@
 
 require 'rubygems'
 require 'ftools'
+require 'logger'
 #require 'profile'
 
+$LOG=Logger.new(STDERR)
+$LOG.sev_threshold = Logger::INFO
 
 class Section
 		attr_accessor :name,:subs,:keys,:macros
@@ -21,34 +24,30 @@ class Section
 
 		def fromFile(file,section_name="Global")
 
-				#debug
-				#puts "Setting section name to: #{section_name}"
+				$LOG.debug "Setting section name to: #{section_name}"
 
 				@name=section_name
 
 				while not file.eof? do
 					line=file.readline
-					#debug
-					#puts "Readed #{line}"
+
+					$LOG.debug "Readed #{line}"
 
 					case line
 						when /^\s*$/; next
 						when /\s*\[\/(\w+)\]/;
-								#debug
-								#puts "Found exit from: #{$1}"
+								$LOG.debug "Found exit from: #{$1}"
 								if @name != $1 then
 									puts "Found exit from #{$1}, expected #{@name}"
 									exit
 								end
 								break
 						when /\s*\[(\w+)\]/;  
-								#debug
-								#puts "Found new section: #{$1}" 
+								$LOG.debug "Found new section: #{$1}" 
 								@subs.push(Section.new.fromFile(file,$1))
 								next
 						when /\s*(\w+)=(.*)/;
-								#debug
-								#puts "Found new key,value pair: #{$1} => #{$2}" 
+								$LOG.debug "Found new key,value pair: #{$1} => #{$2}" 
 								key=$1
 								value=$2
 								#multiline keys are evil
@@ -59,24 +58,20 @@ class Section
 											value+=line
 									end until line=~/\"/
 									value.chomp!
-									#debug
-									#puts "Found multiline key:" 
-									#print value
+									$LOG.debug "Found multiline key:\n #{key}=#{value}" 
 								end
 								@keys.store(key,value)
 								next
 						when /\s*(\{.*\})/;
-								#debug
-								#puts "Found new macro: #{$1}" 
+								$LOG.debug "Found new macro: #{$1}" 
 								@macros.push($1)
 								next
 						when /\s*(\#.*)/;
-								#debug
-								#puts "Found new misc: #{$1}" 
+								$LOG.debug "Found new misc: #{$1}" 
 								@macros.push($1)
 								next
 						else
-								print "Can't understand \"#{line}\""
+								$LOG.fatal "Can't understand \"#{line}\""
 								exit
 					end
 				end
@@ -108,21 +103,17 @@ class Section
 
 		def fromActionSection(act_sect)
 				@name=act_sect.name
-				#debug
-				#puts "Section name: [#{[@name]}]"
+				$LOG.debug "Section name: [#{[@name]}]"
 				act_sect.subs.each do |sub|
-						#debug
-						#puts "Section sub: #{sub[:value].name}"
+						$LOG.debug "Section sub: #{sub[:value].name}"
 						@subs.push(sub[:value])
 				end
 				act_sect.keys.each do |key|
-						#debug
-						#puts "Section key: #{key[:value].to_a.join("=")}"
+						$LOG.debug "Section key: #{key[:value].to_a.join("=")}"
 						@keys.update(key[:value])
 				end
 				act_sect.macros.each do |macro|
-						#debug
-						#puts "Section macro: #{macro[:value]}"
+						$LOG.debug "Section macro: #{macro[:value]}"
 						@macros.push(macro[:value])
 				end
 
@@ -146,41 +137,35 @@ class ActionSection
 
 		def fromFile(file,section_name="Global")
 
-				#debug
-				#puts "Setting section name to: #{section_name}"
+				$LOG.debug "Setting section name to: #{section_name}"
 
 				@name=section_name
 
 				while not file.eof? do
 					line=file.readline
-					#debug
-					#puts "Readed #{line}"
+					$LOG.debug "Readed #{line}"
 
 					case line
 						when /^\s*$/; next
 						when /\s*\[\/(\w+)\]/;
-								#debug
-								#puts "Found exit from: #{$1}"
+								$LOG.debug "Found exit from: #{$1}"
 								if @name != $1 then
 									puts "Found exit from #{$1}, expected #{@name}"
 									exit
 								end
 								break
 						when /\s*\/\s*(\w+)=(.*)/;
-								#debug
-								#puts "Found new filter: #{$1} => #{$2}" 
+								$LOG.debug "Found new filter: #{$1} => #{$2}" 
 								@filter.store($1,$2)
 								next
 						when /\s*([\=\-\+]?)\s*\[(\w+)\]/;
-								#debug
-								#puts "Found new section: #{$2} with action: #{$1}" 
+								$LOG.debug "Found new section: #{$2} with action: #{$1}" 
 								action=$1
 								action = "=" if action == ""
 								@subs.push({:action => action, :value => ActionSection.new.fromFile(file,$2)})
 								next
 						when /\s*([\=\-\+]?)\s*(\w+)=(.*)/;
-								#debug
-								#puts "Found new key,value pair: #{$2} => #{$3} , with action: #{$1}" 
+								$LOG.debug "Found new key,value pair: #{$2} => #{$3} , with action: #{$1}" 
 								action=$1
 								action = "=" if action == ""
 								key=$2
@@ -192,28 +177,24 @@ class ActionSection
 											value+=line
 									end until line=~/\"/
 									value.chomp!
-									#debug
-									#puts "Found multiline key:" 
-									#print value
+									$LOG.debug "Found multiline key:\n #{key}=#{value}" 
 								end
 								@keys.push( {:action => action, :value => {key => value} })
 								next
 						when /\s*([\=\-\+]?)\s*(\{.*\})/;
-								#debug
-								#puts "Found new macro: #{$2} , with action: #{$1}" 
+								$LOG.debug "Found new macro: #{$2} , with action: #{$1}" 
 								action=$1
 								action = "=" if action == ""
 								@macros.push( {:action => action, :value => $2 } )
 								next
 						when /\s*([\=\-\+]?)\s*(\#.*)/;
-								#debug
-								#puts "Found new misc: #{$2} , with action: #{$1}" 
+								$LOG.debug "Found new misc: #{$2} , with action: #{$1}" 
 								action=$1
 								action = "=" if action == ""
 								@macros.push( {:action => action, :value => $2 } )
 								next
 						else
-								print "Can't understand \"#{line}\""
+								$LOG.fatal "Can't understand \"#{line}\""
 								exit
 					end
 				end
@@ -256,17 +237,14 @@ class ActionSection
 								return if section.keys[key] != @filter[key]
 						end
 				end
-				#debug
-				#puts "Applying [#{@name}] action section to [#{section.name}] with filter: #{@filter}" 
+				$LOG.info"Applying [#{@name}] action section to [#{section.name}] with filter: #{@filter}" 
 				@keys.each do |key|
-						#debug
-						#puts "Processing key: #{key[:value].to_a.join("=")}"
+						$LOG.debug "Processing key: #{key[:value].to_a.join("=")}"
 						section.keys.update(key[:value]) if key[:action] =~ /\+|\=/
 								#TODO: if action == "-"
 				end
 				@macros.each do |macro|
-						#debug
-						#puts "Adding macro: #{macro[:value]}"
+						$LOG.debug "Adding macro: #{macro[:value]}"
 						section.macros.push(macro[:value]) if macro[:action] =~ /\+|\=/
 						section.macros.delete(macro[:value]) if macro[:action] =~ /\-/
 				end
@@ -282,14 +260,12 @@ class ActionSection
 		end
 
 		def addActionSection(section)
-				#debug
-				#puts "Adding [#{@name}] action section to [#{section.name}]"
+				$LOG.info "Adding [#{@name}] action section to [#{section.name}]"
 				section.subs.push(Section.new.fromActionSection(self))
 		end
 
 		def removeActionSection(section,sub,filter=nil)
-				#debug
-				#puts "Removing [#{sub.name}] section from [#{section.name}] with filter #{filter.to_a.join('=')}"
+				$LOG.info "Removing [#{sub.name}] section from [#{section.name}] with filter #{filter.to_a.join('=')}"
 				if filter then
 						filter.each_key do |key|
 						   	return if not sub.keys.has_key?(key)
@@ -307,11 +283,11 @@ if __FILE__ == $0 then
 				modlist_name=ARGV[1]
 
 				if not File.exist?(target_name) then
-						puts "Invalid target file: #{target_name}"
+						$LOG.fatal "Invalid target file: #{target_name}"
 						exit
 				end
 				if not File.exist?(modlist_name) then
-						puts "Invalid modlist file: #{modlist_name}"
+						$LOG.fatal "Invalid modlist file: #{modlist_name}"
 						exit
 				end
 
@@ -329,7 +305,7 @@ if __FILE__ == $0 then
 				target.close
 				modlist.close
 		else
-				puts "Usage: wml_modifier {target_file} {modlist_file}"
+				$LOG.error "Usage: wml_modifier {target_file} {modlist_file}"
 		end
 end
 
