@@ -5,6 +5,7 @@
 WESNOTH_VERSION=1.11
 WESNOTH_DATA_DIR=/Applications/Wesnoth.app/Contents/Resources/data
 WESNOTH_LIB_DATA_DIR=/Users/pancho/Library/Application\ Support/Wesnoth_${WESNOTH_VERSION}/data
+
 ERA_UNITS_DIR=era/ARERA_MP_era/units
 ERA_DIR=era/ARERA_MP_era
 ERA_NAME=ARERA_MP_era
@@ -34,7 +35,7 @@ unitsclean:
 	-rm ${UNITS_DIR}/*
 
 modify:
-	scripts/alter_units.sh scripts/wml_modifier.rb ${UNITS_DIR} ${MODIFY_DIR} ${BUILD_DIR}
+	scripts/alter_units.sh scripts/wml_modifier/wml_modifier.rb ${UNITS_DIR} ${MODIFY_DIR} ${BUILD_DIR}
 
 install:
 	scripts/install_units.sh ${BUILD_DIR} ${ERA_UNITS_DIR}
