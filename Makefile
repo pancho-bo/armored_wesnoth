@@ -2,8 +2,9 @@
 # Makefile for ARERA era
 #
 
+WESNOTH_VERSION=1.11
 WESNOTH_DATA_DIR=/Applications/Wesnoth.app/Contents/Resources/data
-WESNOTH_LIB_DATA_DIR=/Users/pancho/Library/Application\ Support/Wesnoth_1.8/data
+WESNOTH_LIB_DATA_DIR=/Users/pancho/Library/Application\ Support/Wesnoth_${WESNOTH_VERSION}/data
 ERA_UNITS_DIR=era/ARERA_MP_era/units
 ERA_DIR=era/ARERA_MP_era
 ERA_NAME=ARERA_MP_era
