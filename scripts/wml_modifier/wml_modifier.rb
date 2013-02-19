@@ -237,7 +237,7 @@ class ActionSection
 								return if section.keys[key] != @filter[key]
 						end
 				end
-				$LOG.info"Applying [#{@name}] action section to [#{section.name}] with filter: #{@filter}" 
+				$LOG.info"Applying [#{@name}] action section to [#{section.name}] with filter: #{@filter.to_a.join('=')}" 
 				@keys.each do |key|
 						$LOG.debug "Processing key: #{key[:value].to_a.join("=")}"
 						section.keys.update(key[:value]) if key[:action] =~ /\+|\=/
