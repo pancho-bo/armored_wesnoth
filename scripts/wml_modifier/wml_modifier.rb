@@ -231,7 +231,7 @@ class ActionSection
 
 		def applyActionSection(section)
 				return if @name != section.name
-				if @filter then
+				if not @filter.empty? then
 						@filter.each_key do |key|
 								return if not section.keys.has_key?(key)
 								return if section.keys[key] != @filter[key]
@@ -264,9 +264,9 @@ class ActionSection
 				section.subs.push(Section.new.fromActionSection(self))
 		end
 
-		def removeActionSection(section,sub,filter=nil)
+		def removeActionSection(section,sub,filter={})
 				$LOG.info "Removing [#{sub.name}] section from [#{section.name}] with filter #{filter.to_a.join('=')}"
-				if filter then
+				if not filter.empty? then
 						filter.each_key do |key|
 						   	return if not sub.keys.has_key?(key)
 							return if sub.keys[key] != @filter[key]

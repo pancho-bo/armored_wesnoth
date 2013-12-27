@@ -35,8 +35,6 @@ class TestWMLModifier < Test::Unit::TestCase
 								assert(unit_type_section.macros.include?("{MAKE_BETTER_MACROS}"))
 								#delete
 								assert_equal(false,unit_type_section.macros.include?("{MAKE_GOOD_MACROS}"))
-								#delete section
-								#assert_equal(0,unit_type_section.subs.select{|s| s.name=="mov_anim"}.length)
 								
 								
 								##subsections tests
@@ -45,8 +43,10 @@ class TestWMLModifier < Test::Unit::TestCase
 								assert_equal(false,attack_anim_sections.empty?)
 								assert(1,attack_anim_sections.length)
 								#assignment
-								attack_sections=unit_type_section.subs.select{|s| s.name="attack"}
+								attack_sections=unit_type_section.subs.select{|s| s.name=="attack"}
 								assert_equal(2,attack_sections.select{|s| s.macros.include?("{PIERCE_MACROS}")}.length)
+								#delete
+								assert_equal(0,unit_type_section.subs.select{|s| s.name=="mov_anim"}.length)
 								
 
 								#filtered assignment
