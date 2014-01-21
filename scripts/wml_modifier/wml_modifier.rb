@@ -3,7 +3,6 @@
 # This script reads actions from wml-modify file and applies that actions to a wml file
 
 require 'rubygems'
-require 'ftools'
 require 'logger'
 #require 'profile'
 

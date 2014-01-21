@@ -23,7 +23,7 @@ fi
 data_dir=$1
 dest_dir=$2
 
-cat unit_list| while read unit    
+cat unit_list | grep -v "^#" | while read unit    
 do
 		if [ `find $data_dir | grep "/{$unit}.cfg" | wc -l` -gt 1 ]
 		then
