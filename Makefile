@@ -3,6 +3,7 @@
 #
 
 WESNOTH_VERSION=1.11
+WESNOTH_BIN=/Applications/Wesnoth.app/Contents/MacOS/Wesnoth
 WESNOTH_DATA_DIR=/Applications/Wesnoth.app/Contents/Resources/data
 WESNOTH_LIB_DATA_DIR=/Users/pancho/Library/Application\ Support/Wesnoth_${WESNOTH_VERSION}/data
 
@@ -13,7 +14,7 @@ UNITS_DIR=units
 MODIFY_DIR=modify
 BUILD_DIR=build
 
-.PHONY: clean fetch initunits era createempty modify unitsclean
+.PHONY: clean fetch initunits era createempty modify unitsclean test
 
 era: clean modify
 
@@ -41,3 +42,7 @@ install:
 	scripts/install_units.sh ${BUILD_DIR} ${ERA_UNITS_DIR}
 	rm -rf ${WESNOTH_LIB_DATA_DIR}/add-ons/${ERA_NAME}
 	cp -R ${ERA_DIR} ${WESNOTH_LIB_DATA_DIR}/add-ons/
+
+test:
+	${WESNOTH_BIN} -m --era ARERA --parm 1:gold:100 --parm 2:gold:100
+	
