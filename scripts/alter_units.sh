@@ -37,8 +37,24 @@ units_dir=$2
 modify_dir=$3
 dest_dir=$4
 
+generic_name="GENERIC.cfg"
+
+if [ -f $modify_dir/$generic_name ]
+then
+    have_generic=1
+fi
+
 for file in ${units_dir}/*.cfg
 do
 		unit=`basename $file`
-		${wml_modifier} ${units_dir}/${unit} ${modify_dir}/$unit >${dest_dir}/${unit}
+
+		if [ $have_generic ] 
+        then
+            ${wml_modifier} ${units_dir}/${unit} ${modify_dir}/$generic_name >${dest_dir}/${unit}.tmp
+		    ${wml_modifier} ${dest_dir}/${unit}.tmp ${modify_dir}/$unit >${dest_dir}/${unit}
+            rm ${dest_dir}/${unit}.tmp
+        else
+		    ${wml_modifier} ${units_dir}/${unit} ${modify_dir}/$unit >${dest_dir}/${unit}
+        fi
+
 done
