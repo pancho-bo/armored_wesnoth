@@ -37,8 +37,8 @@ units_dir=$2
 modify_dir=$3
 dest_dir=$4
 
-for file in ${modify_dir}/*.cfg
+for file in ${units_dir}/*.cfg
 do
-		unit=`echo $file | sed "s/${modify_dir}\///g"`
+		unit=`basename $file`
 		${wml_modifier} ${units_dir}/${unit} ${modify_dir}/$unit >${dest_dir}/${unit}
 done
