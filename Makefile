@@ -19,8 +19,7 @@ BUILD_DIR=build
 era: clean modify
 
 createempty:
-	scripts/create_empty.sh unit_list ${MODIFY_DIR}
-	scripts/init_units.sh ${MODIFY_DIR}
+	scripts/create_empty.sh ${UNITS_DIR} ${MODIFY_DIR}
 
 fetch: 
 	scripts/fetch_units.sh ${WESNOTH_DATA_DIR} ${UNITS_DIR}
@@ -44,5 +43,5 @@ install:
 	cp -R ${ERA_DIR} ${WESNOTH_LIB_DATA_DIR}/add-ons/
 
 test:
-	${WESNOTH_BIN} -m --era ARERA --parm 1:gold:100 --parm 2:gold:100
+	${WESNOTH_BIN} -m --era ARERA --parm 1:gold:60 --parm 2:gold:60 --controller 2:ai
 	

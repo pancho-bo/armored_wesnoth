@@ -1,10 +1,11 @@
 Loyalist_Spearman
-Grunt
+orcs/Grunt
+orcs/Archer
 #Horseman
 #Loyalist_Cavalryman
 #Loyalist_Heavy_Infantryman
 #Loyalist_Fencer
-#Loyalist_Bowman
+Loyalist_Bowman
 #Loyalist_Longbowman
 #Loyalist_Swordsman
 #Loyalist_Pikeman
@@ -12,8 +13,8 @@ Grunt
 #Woodsman_Trapper
 #Mage
 #Outlaw_Rogue
-#elves/Fighter
-#elves/Archer
+elves/Fighter
+elves/Archer
 #elves/Lord
 #elves/Scout
 #elves/Hero

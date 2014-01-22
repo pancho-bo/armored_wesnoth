@@ -16,7 +16,7 @@ fi
 
 if [ ! -d $2 ]
 then
-		echo "Invalid wesnoth destination directory: $2"
+		echo "Invalid destination directory: $2"
 		exit
 fi
 
@@ -33,7 +33,7 @@ do
 		if [ ! -f ${dest_dir}/${unit}.cfg ]
 		then
 			unit_file=`find $data_dir | grep "/${unit}.cfg"`
-			#extended_unit_name=`echo ${unit_file} | sed "s%${data_dir}%%g" | sed st/t_t`
-			cp ${unit_file} ${dest_dir}
+			extended_unit_name=`echo ${unit} | sed s%/%_%g`
+			cp ${unit_file} ${dest_dir}/${extended_unit_name}.cfg
 		fi
 done

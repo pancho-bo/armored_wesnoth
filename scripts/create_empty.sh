@@ -4,13 +4,13 @@
 
 if [ $# -ne 2 ]
 then
-	echo "Usage: create_empty.sh {unit_list} {destination_directory}"
+	echo "Usage: create_empty.sh {unit_dir} {destination_directory}"
 	exit
 fi
 
-if [ ! -f $1 ]
+if [ ! -d $1 ]
 then
-		echo "Invalid wesnoth unit list file: $1"
+		echo "Invalid unit directory: $1"
 	exit
 fi
 
@@ -20,7 +20,7 @@ then
 	exit
 fi
 
-unit_list=$1
+unit_dir=$1
 dest_dir=$2
 
 
@@ -29,9 +29,14 @@ then
 		mkdir $dest_dir
 fi
 
-cat $unit_list | while read a
+ls $unit_dir | while read file
 do
 		#b=`echo $a | sed st/t_t` 
-		b=`echo $a | sed -E st.*/tt` 
-		touch ${dest_dir}/${b}.cfg
+		#b=`echo $a | sed -E st.*/tt` 
+
+        if [ ! -f ${dest_dir}/${b}.cfg ]
+        then
+		    touch ${dest_dir}/${file}
+        fi
+
 done
