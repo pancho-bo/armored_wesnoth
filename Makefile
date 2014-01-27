@@ -36,7 +36,7 @@ unitsclean:
 	-rm ${UNITS_DIR}/*
 
 modify:
-	scripts/alter_units.sh scripts/wml_modifier/wml_modifier.rb ${UNITS_DIR} ${MODIFY_DIR} ${BUILD_DIR}
+	scripts/alter_units.sh wml_modifier/wml_modifier.rb ${UNITS_DIR} ${MODIFY_DIR} ${BUILD_DIR}
 
 install:
 	scripts/install_units.sh ${BUILD_DIR} ${ERA_UNITS_DIR}
