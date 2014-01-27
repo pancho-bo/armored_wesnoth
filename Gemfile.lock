@@ -1,0 +1,15 @@
+PATH
+  remote: ./wml_action
+  specs:
+    wml_action (0.0.1)
+      thor
+
+GEM
+  specs:
+    thor (0.18.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  wml_action!

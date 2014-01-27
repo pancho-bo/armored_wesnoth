@@ -2,40 +2,34 @@
 
 # This script applies changes to the all units in the dir, and saves it to the destination directory
 
-if [ $# -ne 4 ]
+if [ $# -ne 3 ]
 then
-		echo "Usage: alter_units.sh {wml_modifier_script} {units_directory} {modify_directory} {destination_directory}"
+		echo "Usage: alter_units.sh {units_directory} {modify_directory} {destination_directory}"
 		exit
 fi
 
-if [ ! -f $1 ]
+if [ ! -d $1 ]
 then
-		echo "Invalid wml_modifier script: $1"
+		echo "Invalid units directory: $1"
 		exit
 fi
 
 if [ ! -d $2 ]
 then
-		echo "Invalid units directory: $2"
+		echo "Invalid modify directory: $2"
 		exit
 fi
 
 if [ ! -d $3 ]
 then
-		echo "Invalid modify directory: $3"
+		echo "Invalid destination directory: $3"
 		exit
 fi
 
-if [ ! -d $4 ]
-then
-		echo "Invalid destination directory: $4"
-		exit
-fi
-
-wml_modifier=$1
-units_dir=$2
-modify_dir=$3
-dest_dir=$4
+wml_modifier="wml_action modify"
+units_dir=$1
+modify_dir=$2
+dest_dir=$3
 
 generic_name="GENERIC.cfg"
 
