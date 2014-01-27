@@ -14,7 +14,7 @@ UNITS_DIR=units
 MODIFY_DIR=modify
 BUILD_DIR=build
 
-.PHONY: clean fetch initunits era createempty modify unitsclean test
+.PHONY: clean fetch initunits era createempty modify unitsclean test test-orcs
 
 era: clean modify
 
@@ -30,6 +30,7 @@ initunits:
 
 clean:
 	-rm ${BUILD_DIR}/*
+	-rm ${ERA_UNITS_DIR}/*
 
 unitsclean:
 	-rm ${UNITS_DIR}/*
@@ -45,3 +46,7 @@ install:
 test:
 	${WESNOTH_BIN} -m --era ARERA --parm 1:gold:60 --parm 2:gold:60 --controller 2:ai
 	
+test-orcs:
+	${WESNOTH_BIN} -m --era ARERA --parm 1:gold:60 --parm 2:gold:60 --controller 2:ai --side 1:ARERA_Northerners
+
+
