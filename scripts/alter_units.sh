@@ -41,6 +41,7 @@ fi
 for file in ${units_dir}/*.cfg
 do
 		unit=`basename $file`
+    echo "$unit"
 
 		if [ $have_generic ] 
         then
