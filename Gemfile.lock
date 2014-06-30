@@ -1,7 +1,7 @@
 PATH
   remote: ./wml_action
   specs:
-    wml_action (0.0.1)
+    wml_action (0.0.4)
       thor
 
 GEM

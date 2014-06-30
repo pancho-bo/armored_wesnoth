@@ -45,9 +45,7 @@ do
 
 		if [ $have_generic ] 
         then
-            ${wml_modifier} ${units_dir}/${unit} ${modify_dir}/$generic_name >${dest_dir}/${unit}.tmp
-		    ${wml_modifier} ${dest_dir}/${unit}.tmp ${modify_dir}/$unit >${dest_dir}/${unit}
-            rm ${dest_dir}/${unit}.tmp
+            ${wml_modifier} ${units_dir}/${unit} ${modify_dir}/$generic_name ${modify_dir}/$unit >${dest_dir}/${unit}
         else
 		    ${wml_modifier} ${units_dir}/${unit} ${modify_dir}/$unit >${dest_dir}/${unit}
         fi
