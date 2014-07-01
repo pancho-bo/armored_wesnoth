@@ -10,6 +10,7 @@ WESNOTH_LIB_DATA_DIR=/Users/pancho/Library/Application\ Support/Wesnoth_${WESNOT
 ERA_UNITS_DIR=era/ARERA_MP_era/units
 ERA_DIR=era/ARERA_MP_era
 ERA_NAME=ARERA_MP_era
+ERA_PREFIX=ARERA
 UNITS_DIR=units
 MODIFY_DIR=modify
 BUILD_DIR=build
@@ -23,7 +24,7 @@ createempty:
 
 fetch: 
 	scripts/fetch_units.sh ${WESNOTH_DATA_DIR} ${UNITS_DIR}
-	scripts/init_units.sh ${UNITS_DIR}
+	ruby scripts/init_units.rb ${UNITS_DIR} ${ERA_PREFIX}
 
 initunits: 
 	scripts/init_units.sh ${UNITS_DIR}
