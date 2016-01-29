@@ -4,8 +4,8 @@
 
 WESNOTH_VERSION=1.12
 WESNOTH_APP=Wesnoth.app
-WESNOTH_BIN=/Applications/${WESNOTH_APP}/Contents/MacOS/Wesnoth
-WESNOTH_DATA_DIR=/Applications/${WESNOTH_APP}/Contents/Resources/data
+WESNOTH_BIN=~/Applications/${WESNOTH_APP}/Contents/MacOS/Wesnoth
+WESNOTH_DATA_DIR=~/Applications/${WESNOTH_APP}/Contents/Resources/data
 WESNOTH_LIB_DATA_DIR=/Users/pancho/Library/Application\ Support/Wesnoth_${WESNOTH_VERSION}/data
 
 ERA_UNITS_DIR=era/Armored_Era/units

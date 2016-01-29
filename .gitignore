@@ -1,3 +1,7 @@
-era/ARERA_MP_era/units/*
+.DS_Store
+era/Armored_Era/_server.pbl
+era/Armored_Era/units/*
+build/*
+units/*
 wml_action
 wml_action/*

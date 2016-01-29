@@ -1,1 +1,3 @@
-gem 'wml_action', path: './wml_action'
+source 'https://rubygems.org'
+
+gem 'wml_action'
