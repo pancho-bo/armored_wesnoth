@@ -40,3 +40,4 @@ do
         fi
 
 done
+touch ${dest_dir}/GENERIC.cfg
